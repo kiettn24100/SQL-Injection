@@ -13,7 +13,7 @@ Bạn nhập vào `username: Nguyen Kiet` mà bạn biết là có tồn tại  
 
 `SELECT * FORM nguoi_dung WHERE username = 'Nguyen Kiet' AND password = 'abcxyz'`
 
-đây là cú pháp tiêu chuẩn của SQL lấy tất cả dữ liệu từ bảng (table) **nguoi_dung** với điều kiện là **`username = 'Nguyen#  Kiet'`** và **`password = 'abcxyz'`** và tất nhiên nó sẽ không trả về gì cả bởi vì trong bảng `nguoi_dung` không có hàng nào với cột **`username = Nguyen Kiet`** và **`password = abcxyz`** cả 
+đây là cú pháp tiêu chuẩn của SQL lấy tất cả dữ liệu từ bảng (table) **nguoi_dung** với điều kiện là **`username = 'Nguyen  Kiet'`** và **`password = 'abcxyz'`** và tất nhiên nó sẽ không trả về gì cả bởi vì trong bảng `nguoi_dung` không có hàng nào với cột **`username = Nguyen Kiet`** và **`password = abcxyz`** cả 
 
 Vậy nếu để phải biết cả username và password thì điều đó quá khó khăn , giả sử lúc này phía Back-End nó tồn tại lỗ hổng SQLi , khi bạn nhập vào ô username ở front-end là **test** thì nó sẽ lấy chữ **test** đó ghép vào chuỗi `SELECT * FORM nguoi_dung WHERE username = 'test'` thế này 
 
@@ -88,6 +88,8 @@ Chỉ cho phép người dùng nhập các giá trị được định sẵn
 
 Chặn các từ khóa đặc trưng :`UNION`, `SELECT`, `ORDER BY`,...
 
+----
+
 - `Error-based SQLi` : Nói dễ hiểu thì kĩ thuật này cố tình gây ra lỗi ở phía Database sao cho thông báo lỗi trả về 
 
 Bạn gửi một câu lệnh SQL đúng cú pháp nhưng sai logic (chẳng hạn như ép văn bản sang Int) , Database cố gắng thực hiện lệnh đó nhưng fail -> Nó báo lỗi đó ra màn hình nhưng lại vô tình đi kèm với dữ liệu bạn vừa truy vấn 
@@ -114,6 +116,8 @@ Cần cấu hình sao cho khi hệ thống lỗi thì sẽ in ra một thông b�
 
 Nên nếu đầu vào là số thì dùng hàm `is_numberic()` hoặc ép kiểu `int()` trước khi đưa vào câu truy vấn
 
+----
+
 **2. Blind SQL Injection**
 
 Blind có nghĩa là mù thì bạn có thể hiểu Blind SQL Injection ở đây có nghĩa tấn công SQL nhưng kết quả nhận về sẽ không có rõ ràng hoặc là không có 
@@ -122,7 +126,9 @@ Giả sử In-band , nếu bạn hỏi nó "mật khẩu là gì" thì DB nó s�
 
 Kỹ thuật khai thác: 
 
-- Cơ bản nhất `Boolean-based`
+- **Cơ bản nhất `Boolean-based`**
+
+Trước tiên bạn cứ hiểu nó như là một kiểu kỹ thuật chỉ dùng truy vấn hỏi DB dạng câu hỏi đúng hoặc sai chứ không phải là dạng câu hỏi mở như In-band kia .
 
 VD: 
 Giả sử câu lệnh gốc phía Server:
@@ -167,7 +173,11 @@ Nếu đầu vào cần số: Chỉ cho phép số `0-9`
 
 Nếu đầu vào cần chuỗi: Chỉ cho phép chữ cái và số , cấm các ký tự đặc biệt như `OR` , `AND`, `#` , `-`, `>`, `<`, `=`.
 
-- `Time-based`: Khi mà trang web không trả về bất kì dữ liệu nào ở phía Client thì chúng ta có thể sử dụng độ trễ của thời gian phản hồi trang web làm thước đo đúng sai 
+----
+
+- **`Time-based`**:
+
+Khi mà trang web không trả về bất kì dữ liệu nào ở phía Client thì chúng ta có thể sử dụng độ trễ của thời gian phản hồi trang web làm thước đo đúng sai 
 
 Câu lệnh truy vấn gốc:`SELECT * FROM products WHERE id = '$user_input'` 
 
@@ -199,7 +209,11 @@ Giả sử mình thiết lập mọi truy vấn chỉ được chạy tối đa 
 
 - **Kiểm soát đầu vào** (cũng tương tự như cái mình nói ở Boolean-Based)
 
-- `Out-of-band`: Kỹ thuật này khai thác lỗ hổng bằng cách sử dụng các kênh thay thế để lấy dữ liệu từ bên ngoài 
+ -----
+
+- `Out-of-band`:
+
+Kỹ thuật này khai thác lỗ hổng bằng cách sử dụng các kênh thay thế để lấy dữ liệu từ bên ngoài 
 
 Hình dung, bạn có 1 trang web `test.com` , trang web có khả năng ghi lại các yêu cầu mà nó nhận được (chạy dịch vụ DNS Server bên trong)
 
